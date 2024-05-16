@@ -112,3 +112,32 @@ Back.addEventListener('click',()=>{
             console.error('Error al verificar la existencia de la página anterior:', error);
         });
 })
+
+audio.addEventListener('ended', ()=>{
+    // Obtener el nombre del documento actual
+    let currentDocumentName = window.location.pathname.split('/').pop();
+
+    // Extraer el número del nombre del documento
+    let documentNumber = parseInt(currentDocumentName.match(/\d+/)[0]);
+
+    // Sumar 1 al número del documento
+    let nextDocumentNumber = documentNumber + 1;
+
+    // Construir el nombre del siguiente documento
+    let nextDocumentName = currentDocumentName.replace(documentNumber, nextDocumentNumber);
+
+    // Verificar si la página siguiente existe
+    fetch(nextDocumentName)
+        .then(response => {
+            if (response.ok) {
+                // La página siguiente existe, redirigir a esa página y reproducir la siguiente canción
+                window.location.href = nextDocumentName;
+            } else {
+                // La página siguiente no existe, redirigir al archivo "1.html" y no hacer nada con la canción
+                window.location.href = '1.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error al verificar la existencia de la página siguiente:', error);
+        });
+});
